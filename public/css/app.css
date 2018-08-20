@@ -4,3 +4,9 @@ body {
   margin: 0;
 }
 
+.transformStyle {
+  will-change: unset !important;
+  -webkit-transform: unset !important;
+          transform: unset !important;
+}
+

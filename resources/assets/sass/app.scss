@@ -16,3 +16,8 @@ html, body{
   padding: 0;
   margin: 0;
 }
+
+.transformStyle{
+  will-change:unset!important;
+  transform:unset!important;
+}

@@ -48564,6 +48564,10 @@ var _axios2 = _interopRequireDefault(_axios);
 
 var _config = __webpack_require__(433);
 
+var _CustomizedSnackbars = __webpack_require__(457);
+
+var _CustomizedSnackbars2 = _interopRequireDefault(_CustomizedSnackbars);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -48620,6 +48624,10 @@ var LoginForm = function (_React$Component) {
             return error;
         };
 
+        _this.getBack = function () {
+            return _this.setState({ openNoti: false });
+        };
+
         _this.onSubmit = function (e) {
             e.preventDefault();
             var error = _this.validate(_this.state);
@@ -48628,6 +48636,14 @@ var LoginForm = function (_React$Component) {
                 _axios2.default.post(_config.api_url + 'auth/login', _this.state).then(function (respon) {
                     localStorage.token = respon.data.token;
                     _this.props.history.push('/');
+                }).catch(function (error) {
+                    console.log(error.response);
+                    _this.setState({
+                        loading: false,
+                        openNoti: true,
+                        typeNoti: 'error',
+                        messageNoti: error.response.data.error
+                    });
                 });
             } else {
                 _this.setState({ error: error });
@@ -48638,7 +48654,10 @@ var LoginForm = function (_React$Component) {
             email: '',
             password: '',
             error: {},
-            loading: false
+            loading: false,
+            openNoti: false,
+            typeNoti: 'success',
+            messageNoti: 'Good Job!'
         };
         return _this;
     }
@@ -48651,7 +48670,10 @@ var LoginForm = function (_React$Component) {
                 email = _state.email,
                 password = _state.password,
                 error = _state.error,
-                loading = _state.loading;
+                loading = _state.loading,
+                openNoti = _state.openNoti,
+                typeNoti = _state.typeNoti,
+                messageNoti = _state.messageNoti;
 
             return _react2.default.createElement(
                 _react2.default.Fragment,
@@ -48675,7 +48697,8 @@ var LoginForm = function (_React$Component) {
                         { className: classes.form },
                         _react2.default.createElement(
                             _FormControl2.default,
-                            { margin: 'normal', required: true, fullWidth: true, error: error.email, 'aria-describedby': 'name-error-text' },
+                            { margin: 'normal', required: true, fullWidth: true, error: error.email,
+                                'aria-describedby': 'name-error-text' },
                             _react2.default.createElement(
                                 _InputLabel2.default,
                                 { htmlFor: 'email' },
@@ -48697,7 +48720,8 @@ var LoginForm = function (_React$Component) {
                         ),
                         _react2.default.createElement(
                             _FormControl2.default,
-                            { margin: 'normal', required: true, fullWidth: true, error: error.password, 'aria-describedby': 'name-error-text' },
+                            { margin: 'normal', required: true, fullWidth: true, error: error.password,
+                                'aria-describedby': 'name-error-text' },
                             _react2.default.createElement(
                                 _InputLabel2.default,
                                 { htmlFor: 'password' },
@@ -48732,7 +48756,13 @@ var LoginForm = function (_React$Component) {
                             _react2.default.createElement(_CloudUpload2.default, { className: classes.rightIcon })
                         )
                     )
-                )
+                ),
+                _react2.default.createElement(_CustomizedSnackbars2.default, {
+                    openNoti: openNoti,
+                    getBack: this.getBack,
+                    type: typeNoti,
+                    message: messageNoti
+                })
             );
         }
     }]);
@@ -54312,6 +54342,8 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
@@ -54360,7 +54392,33 @@ var _withStyles = __webpack_require__(6);
 
 var _withStyles2 = _interopRequireDefault(_withStyles);
 
+var _axios = __webpack_require__(413);
+
+var _axios2 = _interopRequireDefault(_axios);
+
+var _config = __webpack_require__(433);
+
+var _validator = __webpack_require__(351);
+
+var _validator2 = _interopRequireDefault(_validator);
+
+var _FormHelperText = __webpack_require__(409);
+
+var _FormHelperText2 = _interopRequireDefault(_FormHelperText);
+
+var _CustomizedSnackbars = __webpack_require__(457);
+
+var _CustomizedSnackbars2 = _interopRequireDefault(_CustomizedSnackbars);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var styles = function styles(theme) {
     return {
@@ -54384,93 +54442,221 @@ var styles = function styles(theme) {
     };
 };
 
-function LoginForm(props) {
-    var classes = props.classes;
+var LoginForm = function (_React$Component) {
+    _inherits(LoginForm, _React$Component);
 
+    function LoginForm(props) {
+        _classCallCheck(this, LoginForm);
 
-    return _react2.default.createElement(
-        _react2.default.Fragment,
-        null,
-        _react2.default.createElement(_CssBaseline2.default, null),
-        _react2.default.createElement(
-            'main',
-            { className: classes.layout },
-            _react2.default.createElement(
-                _Avatar2.default,
-                { className: classes.avatar },
-                _react2.default.createElement(_AddCircleOutline2.default, null)
-            ),
-            _react2.default.createElement(
-                _Typography2.default,
-                { variant: 'headline' },
-                'Sign up'
-            ),
-            _react2.default.createElement(
-                'form',
-                { className: classes.form },
+        var _this = _possibleConstructorReturn(this, (LoginForm.__proto__ || Object.getPrototypeOf(LoginForm)).call(this, props));
+
+        _this.handleChange = function (e) {
+            return _this.setState(_defineProperty({}, e.target.name, e.target.value));
+        };
+
+        _this.validate = function (data) {
+            var error = {};
+            if (!_validator2.default.isEmail(data.email)) error.email = "Invalid email";
+            // if (!data.name) error.name = "Can't be blank";
+            if (!(data.cPassword === data.password)) error.password = "Not Match!";
+            if (!data.password) error.password = "Can't be blank";
+            if (!data.cPassword) error.cPassword = "Can't be blank";
+            return error;
+        };
+
+        _this.getBack = function () {
+            return _this.setState({ openNoti: false });
+        };
+
+        _this.submit = function (e) {
+            e.preventDefault();
+            var error = _this.validate(_this.state);
+            if (Object.keys(error).length === 0) {
+                _this.setState({ loading: true });
+                _axios2.default.post(_config.api_url + 'auth/register', _this.state).then(function (respon) {
+                    localStorage.token = respon.data.token;
+                    _this.props.history.push('/');
+                }).catch(function (error) {
+                    var data = error.response.data.errors;
+                    var message = '';
+                    for (var key in data) {
+                        message = data[key][0];
+                    }
+                    _this.setState({
+                        loading: false,
+                        openNoti: true,
+                        typeNoti: 'error',
+                        messageNoti: message
+                    });
+                });
+            } else {
+                _this.setState({ error: error });
+            }
+        };
+
+        _this.state = {
+            name: '',
+            email: '',
+            password: '',
+            cPassword: '',
+            loading: false,
+            error: {},
+            openNoti: true,
+            typeNoti: 'success',
+            messageNoti: 'Good Job!'
+        };
+        return _this;
+    }
+
+    _createClass(LoginForm, [{
+        key: 'render',
+        value: function render() {
+            var classes = this.props.classes;
+            var _state = this.state,
+                name = _state.name,
+                email = _state.email,
+                password = _state.password,
+                cPassword = _state.cPassword,
+                loading = _state.loading,
+                error = _state.error,
+                openNoti = _state.openNoti,
+                typeNoti = _state.typeNoti,
+                messageNoti = _state.messageNoti;
+
+            return _react2.default.createElement(
+                _react2.default.Fragment,
+                null,
+                _react2.default.createElement(_CssBaseline2.default, null),
                 _react2.default.createElement(
-                    _FormControl2.default,
-                    { margin: 'normal', required: true, fullWidth: true },
+                    'main',
+                    { className: classes.layout },
                     _react2.default.createElement(
-                        _InputLabel2.default,
-                        { htmlFor: 'name' },
-                        'Full Name'
+                        _Avatar2.default,
+                        { className: classes.avatar },
+                        _react2.default.createElement(_AddCircleOutline2.default, null)
                     ),
-                    _react2.default.createElement(_Input2.default, { id: 'name', name: 'name', autoComplete: 'name' })
-                ),
-                _react2.default.createElement(
-                    _FormControl2.default,
-                    { margin: 'normal', required: true, fullWidth: true },
                     _react2.default.createElement(
-                        _InputLabel2.default,
-                        { htmlFor: 'email' },
-                        'Email Address'
+                        _Typography2.default,
+                        { variant: 'headline' },
+                        'Sign up'
                     ),
-                    _react2.default.createElement(_Input2.default, { name: 'email', autoComplete: 'email' })
-                ),
-                _react2.default.createElement(
-                    _FormControl2.default,
-                    { margin: 'normal', required: true, fullWidth: true },
                     _react2.default.createElement(
-                        _InputLabel2.default,
-                        { htmlFor: 'password' },
-                        'Password'
+                        'form',
+                        { className: classes.form },
+                        _react2.default.createElement(
+                            _FormControl2.default,
+                            { margin: 'normal', required: true, fullWidth: true, error: error.name,
+                                'aria-describedby': 'name-error-text' },
+                            _react2.default.createElement(
+                                _InputLabel2.default,
+                                { htmlFor: 'name' },
+                                'Full Name'
+                            ),
+                            _react2.default.createElement(_Input2.default, {
+                                id: 'name',
+                                name: 'name',
+                                autoComplete: 'off',
+                                value: name,
+                                onChange: this.handleChange
+                            }),
+                            _react2.default.createElement(
+                                _FormHelperText2.default,
+                                { id: 'name-error-text' },
+                                error.name
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _FormControl2.default,
+                            { margin: 'normal', required: true, fullWidth: true, error: error.email,
+                                'aria-describedby': 'name-error-text' },
+                            _react2.default.createElement(
+                                _InputLabel2.default,
+                                { htmlFor: 'email' },
+                                'Email Address'
+                            ),
+                            _react2.default.createElement(_Input2.default, {
+                                name: 'email',
+                                autoComplete: 'off',
+                                value: email,
+                                onChange: this.handleChange
+                            }),
+                            _react2.default.createElement(
+                                _FormHelperText2.default,
+                                { id: 'name-error-text' },
+                                error.email
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _FormControl2.default,
+                            { margin: 'normal', required: true, fullWidth: true, error: error.password,
+                                'aria-describedby': 'name-error-text' },
+                            _react2.default.createElement(
+                                _InputLabel2.default,
+                                { htmlFor: 'password' },
+                                'Password'
+                            ),
+                            _react2.default.createElement(_Input2.default, {
+                                name: 'password',
+                                type: 'password',
+                                autoComplete: 'off',
+                                value: password,
+                                onChange: this.handleChange
+                            }),
+                            _react2.default.createElement(
+                                _FormHelperText2.default,
+                                { id: 'name-error-text' },
+                                error.password
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _FormControl2.default,
+                            { margin: 'normal', required: true, fullWidth: true, error: error.cPassword,
+                                'aria-describedby': 'name-error-text' },
+                            _react2.default.createElement(
+                                _InputLabel2.default,
+                                { htmlFor: 'cPassword' },
+                                'Confirm Password'
+                            ),
+                            _react2.default.createElement(_Input2.default, {
+                                name: 'cPassword',
+                                type: 'password',
+                                autoComplete: 'off',
+                                value: cPassword,
+                                onChange: this.handleChange
+                            }),
+                            _react2.default.createElement(
+                                _FormHelperText2.default,
+                                { id: 'name-error-text' },
+                                error.cPassword
+                            )
+                        ),
+                        _react2.default.createElement(
+                            _Button2.default,
+                            {
+                                type: 'submit',
+                                fullWidth: true,
+                                variant: 'raised',
+                                color: 'primary',
+                                className: classes.submit,
+                                onClick: this.submit
+                            },
+                            'Sign Up',
+                            _react2.default.createElement(_CloudUpload2.default, { className: classes.rightIcon })
+                        )
                     ),
-                    _react2.default.createElement(_Input2.default, {
-                        name: 'password',
-                        type: 'password',
-                        autoComplete: 'current-password'
+                    _react2.default.createElement(_CustomizedSnackbars2.default, {
+                        openNoti: openNoti,
+                        getBack: this.getBack,
+                        type: typeNoti,
+                        message: messageNoti
                     })
-                ),
-                _react2.default.createElement(
-                    _FormControl2.default,
-                    { margin: 'normal', required: true, fullWidth: true },
-                    _react2.default.createElement(
-                        _InputLabel2.default,
-                        { htmlFor: 'cPassword' },
-                        'Confirm Password'
-                    ),
-                    _react2.default.createElement(_Input2.default, {
-                        name: 'cPassword',
-                        type: 'cPassword'
-                    })
-                ),
-                _react2.default.createElement(
-                    _Button2.default,
-                    {
-                        type: 'submit',
-                        fullWidth: true,
-                        variant: 'raised',
-                        color: 'primary',
-                        className: classes.submit
-                    },
-                    'Sign Up',
-                    _react2.default.createElement(_CloudUpload2.default, { className: classes.rightIcon })
                 )
-            )
-        )
-    );
-}
+            );
+        }
+    }]);
+
+    return LoginForm;
+}(_react2.default.Component);
 
 LoginForm.propTypes = {
     classes: _propTypes2.default.object.isRequired
@@ -54594,6 +54780,1249 @@ var GuestRouter = function GuestRouter(_ref) {
 };
 
 exports.default = GuestRouter;
+
+/***/ }),
+/* 443 */,
+/* 444 */,
+/* 445 */,
+/* 446 */,
+/* 447 */,
+/* 448 */,
+/* 449 */,
+/* 450 */,
+/* 451 */,
+/* 452 */,
+/* 453 */,
+/* 454 */,
+/* 455 */,
+/* 456 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _SnackbarContent.default;
+  }
+});
+
+var _SnackbarContent = _interopRequireDefault(__webpack_require__(467));
+
+/***/ }),
+/* 457 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _propTypes = __webpack_require__(2);
+
+var _propTypes2 = _interopRequireDefault(_propTypes);
+
+var _classnames = __webpack_require__(7);
+
+var _classnames2 = _interopRequireDefault(_classnames);
+
+var _Button = __webpack_require__(73);
+
+var _Button2 = _interopRequireDefault(_Button);
+
+var _CheckCircle = __webpack_require__(458);
+
+var _CheckCircle2 = _interopRequireDefault(_CheckCircle);
+
+var _Error = __webpack_require__(459);
+
+var _Error2 = _interopRequireDefault(_Error);
+
+var _Info = __webpack_require__(460);
+
+var _Info2 = _interopRequireDefault(_Info);
+
+var _Close = __webpack_require__(461);
+
+var _Close2 = _interopRequireDefault(_Close);
+
+var _green = __webpack_require__(205);
+
+var _green2 = _interopRequireDefault(_green);
+
+var _amber = __webpack_require__(462);
+
+var _amber2 = _interopRequireDefault(_amber);
+
+var _IconButton = __webpack_require__(110);
+
+var _IconButton2 = _interopRequireDefault(_IconButton);
+
+var _Snackbar = __webpack_require__(463);
+
+var _Snackbar2 = _interopRequireDefault(_Snackbar);
+
+var _SnackbarContent = __webpack_require__(456);
+
+var _SnackbarContent2 = _interopRequireDefault(_SnackbarContent);
+
+var _Warning = __webpack_require__(468);
+
+var _Warning2 = _interopRequireDefault(_Warning);
+
+var _styles = __webpack_require__(27);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+var variantIcon = {
+    success: _CheckCircle2.default,
+    warning: _Warning2.default,
+    error: _Error2.default,
+    info: _Info2.default
+};
+
+var styles1 = function styles1(theme) {
+    return {
+        success: {
+            backgroundColor: _green2.default[600]
+        },
+        error: {
+            backgroundColor: theme.palette.error.dark
+        },
+        info: {
+            backgroundColor: theme.palette.primary.dark
+        },
+        warning: {
+            backgroundColor: _amber2.default[700]
+        },
+        icon: {
+            fontSize: 20
+        },
+        iconVariant: {
+            opacity: 0.9,
+            marginRight: theme.spacing.unit
+        },
+        message: {
+            display: 'flex',
+            alignItems: 'center'
+        }
+    };
+};
+
+function MySnackbarContent(props) {
+    var classes = props.classes,
+        className = props.className,
+        message = props.message,
+        onClose = props.onClose,
+        variant = props.variant,
+        other = _objectWithoutProperties(props, ['classes', 'className', 'message', 'onClose', 'variant']);
+
+    var Icon = variantIcon[variant];
+
+    return _react2.default.createElement(_SnackbarContent2.default, _extends({
+        className: (0, _classnames2.default)(classes[variant], className),
+        'aria-describedby': 'client-snackbar',
+        message: _react2.default.createElement(
+            'span',
+            { id: 'client-snackbar', className: classes.message },
+            _react2.default.createElement(Icon, { className: (0, _classnames2.default)(classes.icon, classes.iconVariant) }),
+            message
+        ),
+        action: [_react2.default.createElement(
+            _IconButton2.default,
+            {
+                key: 'close',
+                'aria-label': 'Close',
+                color: 'inherit',
+                className: classes.close,
+                onClick: onClose
+            },
+            _react2.default.createElement(_Close2.default, { className: classes.icon })
+        )]
+    }, other));
+}
+
+MySnackbarContent.propTypes = {
+    classes: _propTypes2.default.object.isRequired,
+    className: _propTypes2.default.string,
+    message: _propTypes2.default.node,
+    onClose: _propTypes2.default.func,
+    variant: _propTypes2.default.oneOf(['success', 'warning', 'error', 'info']).isRequired
+};
+
+var MySnackbarContentWrapper = (0, _styles.withStyles)(styles1)(MySnackbarContent);
+
+var styles2 = function styles2(theme) {
+    return {
+        margin: {
+            margin: theme.spacing.unit
+        },
+        transformTest: {
+            willChange: 'unset!important',
+            transform: 'none',
+            all: 'unset'
+        }
+    };
+};
+
+var CustomizedSnackbars = function (_React$Component) {
+    _inherits(CustomizedSnackbars, _React$Component);
+
+    function CustomizedSnackbars() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, CustomizedSnackbars);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = CustomizedSnackbars.__proto__ || Object.getPrototypeOf(CustomizedSnackbars)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+            open: false,
+            temp: false
+        }, _this.handleClose = function (event, reason) {
+            if (reason === 'clickaway') {
+                return;
+            }
+
+            _this.setState({ open: false });
+            _this.props.getBack();
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(CustomizedSnackbars, [{
+        key: 'render',
+        value: function render() {
+            var _props = this.props,
+                classes = _props.classes,
+                message = _props.message,
+                type = _props.type;
+
+
+            return _react2.default.createElement(
+                'div',
+                { className: classes.transformTest },
+                _react2.default.createElement(
+                    _Snackbar2.default,
+                    {
+                        anchorOrigin: {
+                            vertical: 'bottom',
+                            horizontal: 'center'
+                        },
+                        open: this.state.open,
+                        autoHideDuration: 6000,
+                        onClose: this.handleClose
+
+                    },
+                    _react2.default.createElement(MySnackbarContentWrapper, {
+                        onClose: this.handleClose,
+                        variant: type,
+                        message: message
+                    })
+                )
+            );
+        }
+    }], [{
+        key: 'getDerivedStateFromProps',
+        value: function getDerivedStateFromProps(nextProps, prevState) {
+            if (nextProps.openNoti === true && prevState.open === false && prevState.temp === false) {
+                return { open: true, temp: true };
+            }
+            return { open: false, temp: false };
+        }
+    }]);
+
+    return CustomizedSnackbars;
+}(_react2.default.Component);
+
+CustomizedSnackbars.propTypes = {
+    classes: _propTypes2.default.object.isRequired
+};
+
+exports.default = (0, _styles.withStyles)(styles2)(CustomizedSnackbars);
+
+/***/ }),
+/* 458 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(1));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(14));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
+  fill: "none",
+  d: "M0 0h24v24H0z"
+}), _react.default.createElement("path", {
+  d: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"
+})), 'CheckCircle');
+
+exports.default = _default;
+
+/***/ }),
+/* 459 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(1));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(14));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
+  fill: "none",
+  d: "M0 0h24v24H0z"
+}), _react.default.createElement("path", {
+  d: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"
+})), 'Error');
+
+exports.default = _default;
+
+/***/ }),
+/* 460 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(1));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(14));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
+  fill: "none",
+  d: "M0 0h24v24H0z"
+}), _react.default.createElement("path", {
+  d: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+})), 'Info');
+
+exports.default = _default;
+
+/***/ }),
+/* 461 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(1));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(14));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
+  d: "M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"
+}), _react.default.createElement("path", {
+  fill: "none",
+  d: "M0 0h24v24H0z"
+})), 'Close');
+
+exports.default = _default;
+
+/***/ }),
+/* 462 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var amber = {
+  50: '#fff8e1',
+  100: '#ffecb3',
+  200: '#ffe082',
+  300: '#ffd54f',
+  400: '#ffca28',
+  500: '#ffc107',
+  600: '#ffb300',
+  700: '#ffa000',
+  800: '#ff8f00',
+  900: '#ff6f00',
+  A100: '#ffe57f',
+  A200: '#ffd740',
+  A400: '#ffc400',
+  A700: '#ffab00'
+};
+var _default = amber;
+exports.default = _default;
+
+/***/ }),
+/* 463 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _Snackbar.default;
+  }
+});
+
+var _Snackbar = _interopRequireDefault(__webpack_require__(464));
+
+/***/ }),
+/* 464 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _extends2 = _interopRequireDefault(__webpack_require__(5));
+
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(4));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(10));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(11));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(12));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(8));
+
+var _objectSpread8 = _interopRequireDefault(__webpack_require__(13));
+
+var _react = _interopRequireDefault(__webpack_require__(1));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(2));
+
+var _classnames = _interopRequireDefault(__webpack_require__(7));
+
+var _reactEventListener = _interopRequireDefault(__webpack_require__(31));
+
+var _withStyles = _interopRequireDefault(__webpack_require__(6));
+
+var _transitions = __webpack_require__(38);
+
+var _ClickAwayListener = _interopRequireDefault(__webpack_require__(465));
+
+var _helpers = __webpack_require__(19);
+
+var _Slide = _interopRequireDefault(__webpack_require__(253));
+
+var _SnackbarContent = _interopRequireDefault(__webpack_require__(456));
+
+var styles = function styles(theme) {
+  var gutter = 24;
+  var top = {
+    top: 0
+  };
+  var bottom = {
+    bottom: 0
+  };
+  var right = {
+    justifyContent: 'flex-end'
+  };
+  var left = {
+    justifyContent: 'flex-start'
+  };
+  var topSpace = {
+    top: gutter
+  };
+  var bottomSpace = {
+    bottom: gutter
+  };
+  var rightSpace = {
+    right: gutter
+  };
+  var leftSpace = {
+    left: gutter
+  };
+  var center = {
+    left: '50%',
+    right: 'auto',
+    transform: 'translateX(-50%)'
+  };
+  return {
+    /* Styles applied to the root element. */
+    root: {
+      zIndex: theme.zIndex.snackbar,
+      position: 'fixed',
+      display: 'flex',
+      left: 0,
+      right: 0,
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+
+    /* Styles applied to the root element if `anchorOrigin={{ 'top', 'center' }}`. */
+    anchorOriginTopCenter: (0, _objectSpread8.default)({}, top, (0, _defineProperty2.default)({}, theme.breakpoints.up('md'), (0, _objectSpread8.default)({}, center))),
+
+    /* Styles applied to the root element if `anchorOrigin={{ 'bottom', 'center' }}`. */
+    anchorOriginBottomCenter: (0, _objectSpread8.default)({}, bottom, (0, _defineProperty2.default)({}, theme.breakpoints.up('md'), (0, _objectSpread8.default)({}, center))),
+
+    /* Styles applied to the root element if `anchorOrigin={{ 'top', 'right' }}`. */
+    anchorOriginTopRight: (0, _objectSpread8.default)({}, top, right, (0, _defineProperty2.default)({}, theme.breakpoints.up('md'), (0, _objectSpread8.default)({
+      left: 'auto'
+    }, topSpace, rightSpace))),
+
+    /* Styles applied to the root element if `anchorOrigin={{ 'bottom', 'right' }}`. */
+    anchorOriginBottomRight: (0, _objectSpread8.default)({}, bottom, right, (0, _defineProperty2.default)({}, theme.breakpoints.up('md'), (0, _objectSpread8.default)({
+      left: 'auto'
+    }, bottomSpace, rightSpace))),
+
+    /* Styles applied to the root element if `anchorOrigin={{ 'top', 'left' }}`. */
+    anchorOriginTopLeft: (0, _objectSpread8.default)({}, top, left, (0, _defineProperty2.default)({}, theme.breakpoints.up('md'), (0, _objectSpread8.default)({
+      right: 'auto'
+    }, topSpace, leftSpace))),
+
+    /* Styles applied to the root element if `anchorOrigin={{ 'bottom', 'left' }}`. */
+    anchorOriginBottomLeft: (0, _objectSpread8.default)({}, bottom, left, (0, _defineProperty2.default)({}, theme.breakpoints.up('md'), (0, _objectSpread8.default)({
+      right: 'auto'
+    }, bottomSpace, leftSpace)))
+  };
+};
+/* istanbul ignore if */
+
+
+exports.styles = styles;
+
+if ("development" !== 'production' && !_react.default.createContext) {
+  throw new Error('Material-UI: react@16.3.0 or greater is required.');
+}
+
+var Snackbar =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(Snackbar, _React$Component);
+
+  function Snackbar() {
+    var _ref;
+
+    var _temp, _this;
+
+    (0, _classCallCheck2.default)(this, Snackbar);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return (0, _possibleConstructorReturn2.default)(_this, (_temp = _this = (0, _possibleConstructorReturn2.default)(this, (_ref = Snackbar.__proto__ || Object.getPrototypeOf(Snackbar)).call.apply(_ref, [this].concat(args))), _this.timerAutoHide = null, _this.state = {}, _this.handleMouseEnter = function (event) {
+      if (_this.props.onMouseEnter) {
+        _this.props.onMouseEnter(event);
+      }
+
+      _this.handlePause();
+    }, _this.handleMouseLeave = function (event) {
+      if (_this.props.onMouseLeave) {
+        _this.props.onMouseLeave(event);
+      }
+
+      _this.handleResume();
+    }, _this.handleClickAway = function (event) {
+      if (_this.props.onClose) {
+        _this.props.onClose(event, 'clickaway');
+      }
+    }, _this.handlePause = function () {
+      clearTimeout(_this.timerAutoHide);
+    }, _this.handleResume = function () {
+      if (_this.props.autoHideDuration != null) {
+        if (_this.props.resumeHideDuration != null) {
+          _this.setAutoHideTimer(_this.props.resumeHideDuration);
+
+          return;
+        }
+
+        _this.setAutoHideTimer(_this.props.autoHideDuration * 0.5);
+      }
+    }, _this.handleExited = function () {
+      _this.setState({
+        exited: true
+      });
+    }, _temp));
+  }
+
+  (0, _createClass2.default)(Snackbar, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      if (this.props.open) {
+        this.setAutoHideTimer();
+      }
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      if (prevProps.open !== this.props.open) {
+        if (this.props.open) {
+          this.setAutoHideTimer();
+        } else {
+          clearTimeout(this.timerAutoHide);
+        }
+      }
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      clearTimeout(this.timerAutoHide);
+    }
+  }, {
+    key: "setAutoHideTimer",
+    // Timer that controls delay before snackbar auto hides
+    value: function setAutoHideTimer(autoHideDuration) {
+      var _this2 = this;
+
+      var autoHideDurationBefore = autoHideDuration != null ? autoHideDuration : this.props.autoHideDuration;
+
+      if (!this.props.onClose || autoHideDurationBefore == null) {
+        return;
+      }
+
+      clearTimeout(this.timerAutoHide);
+      this.timerAutoHide = setTimeout(function () {
+        var autoHideDurationAfter = autoHideDuration != null ? autoHideDuration : _this2.props.autoHideDuration;
+
+        if (!_this2.props.onClose || autoHideDurationAfter == null) {
+          return;
+        }
+
+        _this2.props.onClose(null, 'timeout');
+      }, autoHideDurationBefore);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _props = this.props,
+          action = _props.action,
+          _props$anchorOrigin = _props.anchorOrigin,
+          vertical = _props$anchorOrigin.vertical,
+          horizontal = _props$anchorOrigin.horizontal,
+          autoHideDuration = _props.autoHideDuration,
+          children = _props.children,
+          classes = _props.classes,
+          className = _props.className,
+          ContentProps = _props.ContentProps,
+          disableWindowBlurListener = _props.disableWindowBlurListener,
+          message = _props.message,
+          onClose = _props.onClose,
+          onEnter = _props.onEnter,
+          onEntered = _props.onEntered,
+          onEntering = _props.onEntering,
+          onExit = _props.onExit,
+          onExited = _props.onExited,
+          onExiting = _props.onExiting,
+          onMouseEnter = _props.onMouseEnter,
+          onMouseLeave = _props.onMouseLeave,
+          open = _props.open,
+          resumeHideDuration = _props.resumeHideDuration,
+          TransitionComponent = _props.TransitionComponent,
+          transitionDuration = _props.transitionDuration,
+          TransitionProps = _props.TransitionProps,
+          other = (0, _objectWithoutProperties2.default)(_props, ["action", "anchorOrigin", "autoHideDuration", "children", "classes", "className", "ContentProps", "disableWindowBlurListener", "message", "onClose", "onEnter", "onEntered", "onEntering", "onExit", "onExited", "onExiting", "onMouseEnter", "onMouseLeave", "open", "resumeHideDuration", "TransitionComponent", "transitionDuration", "TransitionProps"]); // So we only render active snackbars.
+
+      if (!open && this.state.exited) {
+        return null;
+      }
+
+      return _react.default.createElement(_ClickAwayListener.default, {
+        onClickAway: this.handleClickAway
+      }, _react.default.createElement("div", (0, _extends2.default)({
+        className: (0, _classnames.default)(classes.root, classes["anchorOrigin".concat((0, _helpers.capitalize)(vertical)).concat((0, _helpers.capitalize)(horizontal))], className),
+        onMouseEnter: this.handleMouseEnter,
+        onMouseLeave: this.handleMouseLeave
+      }, other), _react.default.createElement(_reactEventListener.default, {
+        target: "window",
+        onFocus: disableWindowBlurListener ? undefined : this.handleResume,
+        onBlur: disableWindowBlurListener ? undefined : this.handlePause
+      }), _react.default.createElement(TransitionComponent, (0, _extends2.default)({
+        appear: true,
+        "in": open,
+        onEnter: onEnter,
+        onEntered: onEntered,
+        onEntering: onEntering,
+        onExit: onExit,
+        onExited: (0, _helpers.createChainedFunction)(this.handleExited, onExited),
+        onExiting: onExiting,
+        timeout: transitionDuration,
+        direction: vertical === 'top' ? 'down' : 'up'
+      }, TransitionProps), children || _react.default.createElement(_SnackbarContent.default, (0, _extends2.default)({
+        message: message,
+        action: action
+      }, ContentProps)))));
+    }
+  }], [{
+    key: "getDerivedStateFromProps",
+    value: function getDerivedStateFromProps(nextProps, prevState) {
+      if (typeof prevState.exited === 'undefined') {
+        return {
+          exited: !nextProps.open
+        };
+      }
+
+      if (nextProps.open) {
+        return {
+          exited: false
+        };
+      }
+
+      return null;
+    }
+  }]);
+  return Snackbar;
+}(_react.default.Component);
+
+Snackbar.propTypes =  true ? {
+  /**
+   * The action to display.
+   */
+  action: _propTypes.default.node,
+
+  /**
+   * The anchor of the `Snackbar`.
+   */
+  anchorOrigin: _propTypes.default.shape({
+    horizontal: _propTypes.default.oneOf(['left', 'center', 'right']).isRequired,
+    vertical: _propTypes.default.oneOf(['top', 'center', 'bottom']).isRequired
+  }),
+
+  /**
+   * The number of milliseconds to wait before automatically calling the
+   * `onClose` function. `onClose` should then set the state of the `open`
+   * prop to hide the Snackbar. This behavior is disabled by default with
+   * the `null` value.
+   */
+  autoHideDuration: _propTypes.default.number,
+
+  /**
+   * If you wish the take control over the children of the component you can use this property.
+   * When used, you replace the `SnackbarContent` component with the children.
+   */
+  children: _propTypes.default.element,
+
+  /**
+   * Override or extend the styles applied to the component.
+   * See [CSS API](#css-api) below for more details.
+   */
+  classes: _propTypes.default.object.isRequired,
+
+  /**
+   * @ignore
+   */
+  className: _propTypes.default.string,
+
+  /**
+   * Properties applied to the [`SnackbarContent`](/api/snackbar-content) element.
+   */
+  ContentProps: _propTypes.default.object,
+
+  /**
+   * If `true`, the `autoHideDuration` timer will expire even if the window is not focused.
+   */
+  disableWindowBlurListener: _propTypes.default.bool,
+
+  /**
+   * When displaying multiple consecutive Snackbars from a parent rendering a single
+   * <Snackbar/>, add the key property to ensure independent treatment of each message.
+   * e.g. <Snackbar key={message} />, otherwise, the message may update-in-place and
+   * features such as autoHideDuration may be canceled.
+   */
+  key: _propTypes.default.any,
+
+  /**
+   * The message to display.
+   */
+  message: _propTypes.default.node,
+
+  /**
+   * Callback fired when the component requests to be closed.
+   * Typically `onClose` is used to set state in the parent component,
+   * which is used to control the `Snackbar` `open` prop.
+   * The `reason` parameter can optionally be used to control the response to `onClose`,
+   * for example ignoring `clickaway`.
+   *
+   * @param {object} event The event source of the callback
+   * @param {string} reason Can be:`"timeout"` (`autoHideDuration` expired) or: `"clickaway"`
+   */
+  onClose: _propTypes.default.func,
+
+  /**
+   * Callback fired before the transition is entering.
+   */
+  onEnter: _propTypes.default.func,
+
+  /**
+   * Callback fired when the transition has entered.
+   */
+  onEntered: _propTypes.default.func,
+
+  /**
+   * Callback fired when the transition is entering.
+   */
+  onEntering: _propTypes.default.func,
+
+  /**
+   * Callback fired before the transition is exiting.
+   */
+  onExit: _propTypes.default.func,
+
+  /**
+   * Callback fired when the transition has exited.
+   */
+  onExited: _propTypes.default.func,
+
+  /**
+   * Callback fired when the transition is exiting.
+   */
+  onExiting: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onMouseEnter: _propTypes.default.func,
+
+  /**
+   * @ignore
+   */
+  onMouseLeave: _propTypes.default.func,
+
+  /**
+   * If true, `Snackbar` is open.
+   */
+  open: _propTypes.default.bool,
+
+  /**
+   * The number of milliseconds to wait before dismissing after user interaction.
+   * If `autoHideDuration` property isn't specified, it does nothing.
+   * If `autoHideDuration` property is specified but `resumeHideDuration` isn't,
+   * we default to `autoHideDuration / 2` ms.
+   */
+  resumeHideDuration: _propTypes.default.number,
+
+  /**
+   * Transition component.
+   */
+  TransitionComponent: _propTypes.default.oneOfType([_propTypes.default.string, _propTypes.default.func, _propTypes.default.object]),
+
+  /**
+   * The duration for the transition, in milliseconds.
+   * You may specify a single timeout for all transitions, or individually with an object.
+   */
+  transitionDuration: _propTypes.default.oneOfType([_propTypes.default.number, _propTypes.default.shape({
+    enter: _propTypes.default.number,
+    exit: _propTypes.default.number
+  })]),
+
+  /**
+   * Properties applied to the `Transition` element.
+   */
+  TransitionProps: _propTypes.default.object
+} : {};
+Snackbar.defaultProps = {
+  anchorOrigin: {
+    vertical: 'bottom',
+    horizontal: 'center'
+  },
+  disableWindowBlurListener: false,
+  TransitionComponent: _Slide.default,
+  transitionDuration: {
+    enter: _transitions.duration.enteringScreen,
+    exit: _transitions.duration.leavingScreen
+  }
+};
+
+var _default = (0, _withStyles.default)(styles, {
+  flip: false,
+  name: 'MuiSnackbar'
+})(Snackbar);
+
+exports.default = _default;
+
+/***/ }),
+/* 465 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function get() {
+    return _ClickAwayListener.default;
+  }
+});
+
+var _ClickAwayListener = _interopRequireDefault(__webpack_require__(466));
+
+/***/ }),
+/* 466 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _extends2 = _interopRequireDefault(__webpack_require__(5));
+
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(4));
+
+var _classCallCheck2 = _interopRequireDefault(__webpack_require__(9));
+
+var _createClass2 = _interopRequireDefault(__webpack_require__(10));
+
+var _possibleConstructorReturn2 = _interopRequireDefault(__webpack_require__(11));
+
+var _inherits2 = _interopRequireDefault(__webpack_require__(12));
+
+var _react = _interopRequireDefault(__webpack_require__(1));
+
+var _reactDom = _interopRequireDefault(__webpack_require__(17));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(2));
+
+var _reactEventListener = _interopRequireDefault(__webpack_require__(31));
+
+var _ownerDocument = _interopRequireDefault(__webpack_require__(21));
+
+// @inheritedComponent EventListener
+
+/**
+ * Listen for click events that occur somewhere in the document, outside of the element itself.
+ * For instance, if you need to hide a menu when people click anywhere else on your page.
+ */
+var ClickAwayListener =
+/*#__PURE__*/
+function (_React$Component) {
+  (0, _inherits2.default)(ClickAwayListener, _React$Component);
+
+  function ClickAwayListener() {
+    var _ref;
+
+    var _temp, _this;
+
+    (0, _classCallCheck2.default)(this, ClickAwayListener);
+
+    for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return (0, _possibleConstructorReturn2.default)(_this, (_temp = _this = (0, _possibleConstructorReturn2.default)(this, (_ref = ClickAwayListener.__proto__ || Object.getPrototypeOf(ClickAwayListener)).call.apply(_ref, [this].concat(args))), _this.node = null, _this.mounted = null, _this.handleClickAway = function (event) {
+      // Ignore events that have been `event.preventDefault()` marked.
+      if (event.defaultPrevented) {
+        return;
+      } // IE11 support, which trigger the handleClickAway even after the unbind
+
+
+      if (!_this.mounted) {
+        return;
+      } // The child might render null.
+
+
+      if (!_this.node) {
+        return;
+      }
+
+      var doc = (0, _ownerDocument.default)(_this.node);
+
+      if (doc.documentElement && doc.documentElement.contains(event.target) && !_this.node.contains(event.target)) {
+        _this.props.onClickAway(event);
+      }
+    }, _temp));
+  }
+
+  (0, _createClass2.default)(ClickAwayListener, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      // Finds the first child when a component returns a fragment.
+      // https://github.com/facebook/react/blob/036ae3c6e2f056adffc31dfb78d1b6f0c63272f0/packages/react-dom/src/__tests__/ReactDOMFiber-test.js#L105
+      this.node = _reactDom.default.findDOMNode(this);
+      this.mounted = true;
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.mounted = false;
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _props = this.props,
+          children = _props.children,
+          mouseEvent = _props.mouseEvent,
+          touchEvent = _props.touchEvent,
+          onClickAway = _props.onClickAway,
+          other = (0, _objectWithoutProperties2.default)(_props, ["children", "mouseEvent", "touchEvent", "onClickAway"]);
+      var listenerProps = {};
+
+      if (mouseEvent !== false) {
+        listenerProps[mouseEvent] = this.handleClickAway;
+      }
+
+      if (touchEvent !== false) {
+        listenerProps[touchEvent] = this.handleClickAway;
+      }
+
+      return _react.default.createElement(_reactEventListener.default, (0, _extends2.default)({
+        target: "document"
+      }, listenerProps, other), children);
+    }
+  }]);
+  return ClickAwayListener;
+}(_react.default.Component);
+
+ClickAwayListener.propTypes =  true ? {
+  /**
+   * The wrapped element.
+   */
+  children: _propTypes.default.element.isRequired,
+
+  /**
+   * The mouse event to listen to. You can disable the listener by providing `false`.
+   */
+  mouseEvent: _propTypes.default.oneOf(['onClick', 'onMouseDown', 'onMouseUp', false]),
+
+  /**
+   * Callback fired when a "click away" event is detected.
+   */
+  onClickAway: _propTypes.default.func.isRequired,
+
+  /**
+   * The touch event to listen to. You can disable the listener by providing `false`.
+   */
+  touchEvent: _propTypes.default.oneOf(['onTouchStart', 'onTouchEnd', false])
+} : {};
+ClickAwayListener.defaultProps = {
+  mouseEvent: 'onMouseUp',
+  touchEvent: 'onTouchEnd'
+};
+var _default = ClickAwayListener;
+exports.default = _default;
+
+/***/ }),
+/* 467 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.styles = void 0;
+
+var _extends2 = _interopRequireDefault(__webpack_require__(5));
+
+var _objectWithoutProperties2 = _interopRequireDefault(__webpack_require__(4));
+
+var _defineProperty2 = _interopRequireDefault(__webpack_require__(8));
+
+var _react = _interopRequireDefault(__webpack_require__(1));
+
+var _propTypes = _interopRequireDefault(__webpack_require__(2));
+
+var _classnames = _interopRequireDefault(__webpack_require__(7));
+
+var _withStyles = _interopRequireDefault(__webpack_require__(6));
+
+var _Paper = _interopRequireDefault(__webpack_require__(33));
+
+var _Typography = _interopRequireDefault(__webpack_require__(26));
+
+var _colorManipulator = __webpack_require__(37);
+
+// @inheritedComponent Paper
+var styles = function styles(theme) {
+  var _root;
+
+  var emphasis = theme.palette.type === 'light' ? 0.8 : 0.98;
+  var backgroundColor = (0, _colorManipulator.emphasize)(theme.palette.background.default, emphasis);
+  return {
+    /* Styles applied to the root element. */
+    root: (_root = {
+      color: theme.palette.getContrastText(backgroundColor),
+      backgroundColor: backgroundColor,
+      display: 'flex',
+      alignItems: 'center',
+      flexWrap: 'wrap',
+      padding: '6px 24px'
+    }, (0, _defineProperty2.default)(_root, theme.breakpoints.up('md'), {
+      minWidth: 288,
+      maxWidth: 568,
+      borderRadius: theme.shape.borderRadius
+    }), (0, _defineProperty2.default)(_root, theme.breakpoints.down('sm'), {
+      flexGrow: 1
+    }), _root),
+
+    /* Styles applied to the message wrapper element. */
+    message: {
+      padding: '8px 0'
+    },
+
+    /* Styles applied to the action wrapper element if `action` is provided. */
+    action: {
+      display: 'flex',
+      alignItems: 'center',
+      marginLeft: 'auto',
+      paddingLeft: 24,
+      marginRight: -8
+    }
+  };
+};
+
+exports.styles = styles;
+
+function SnackbarContent(props) {
+  var action = props.action,
+      classes = props.classes,
+      className = props.className,
+      message = props.message,
+      other = (0, _objectWithoutProperties2.default)(props, ["action", "classes", "className", "message"]);
+  return _react.default.createElement(_Paper.default, (0, _extends2.default)({
+    component: _Typography.default,
+    headlineMapping: {
+      body1: 'div'
+    },
+    role: "alertdialog",
+    square: true,
+    elevation: 6,
+    className: (0, _classnames.default)(classes.root, className)
+  }, other), _react.default.createElement("div", {
+    className: classes.message
+  }, message), action ? _react.default.createElement("div", {
+    className: classes.action
+  }, action) : null);
+}
+
+SnackbarContent.propTypes =  true ? {
+  /**
+   * The action to display.
+   */
+  action: _propTypes.default.node,
+
+  /**
+   * Override or extend the styles applied to the component.
+   * See [CSS API](#css-api) below for more details.
+   */
+  classes: _propTypes.default.object.isRequired,
+
+  /**
+   * @ignore
+   */
+  className: _propTypes.default.string,
+
+  /**
+   * The message to display.
+   */
+  message: _propTypes.default.node
+} : {};
+
+var _default = (0, _withStyles.default)(styles, {
+  name: 'MuiSnackbarContent'
+})(SnackbarContent);
+
+exports.default = _default;
+
+/***/ }),
+/* 468 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var _interopRequireDefault = __webpack_require__(0);
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(__webpack_require__(1));
+
+var _createSvgIcon = _interopRequireDefault(__webpack_require__(14));
+
+var _default = (0, _createSvgIcon.default)(_react.default.createElement(_react.default.Fragment, null, _react.default.createElement("path", {
+  fill: "none",
+  d: "M0 0h24v24H0z"
+}), _react.default.createElement("path", {
+  d: "M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"
+})), 'Warning');
+
+exports.default = _default;
 
 /***/ })
 /******/ ]);
