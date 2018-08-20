@@ -1,22 +1,44 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import withRoot from './withRoot';
+import {
+    BrowserRouter as Router,
+    Route,
+    Switch
+} from "react-router-dom";
+import LayOut from './components/layouts/LayOut'
+import DashBoardPage from './components/page/DashBoardPage'
+import NotFoundPage from './components/page/NotFoundPage'
+import LoginPage from './components/page/LoginPage'
+import UserRoute from './route/UserRouter'
+import GuestRoute from './route/GuestRouter'
 
-/**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
- */
+class Index extends React.Component {
 
-require('./bootstrap');
+    handleLogout = () =>{
+        localStorage.clear()
+        this.forceUpdate()
+    }
 
-window.Vue = require('vue');
+    render() {
+        return (
+            <Router>
+                <LayOut
+                    logout={this.handleLogout}
+                >
+                    <Switch>
+                        <UserRoute path='/' exact component={DashBoardPage}/>
+                        <GuestRoute path='/login' exact component={LoginPage}/>
+                        <Route component={NotFoundPage}/>
+                    </Switch>
+                </LayOut>
+            </Router>
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+        );
+    }
+}
 
-Vue.component('example-component', require('./components/ExampleComponent.vue'));
+withRoot(Index);
 
-const app = new Vue({
-    el: '#app'
-});
+ReactDOM.render(<Index/>, document.querySelector('#app'));
+
