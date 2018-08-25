@@ -12,6 +12,8 @@ import NotFoundPage from './components/page/NotFoundPage'
 import LoginPage from './components/page/LoginPage'
 import UserRoute from './route/UserRouter'
 import GuestRoute from './route/GuestRouter'
+import PostPage from "./components/page/PostPage";
+import AddPostPage from "./components/page/AddPostPage";
 
 class Index extends React.Component {
 
@@ -27,8 +29,13 @@ class Index extends React.Component {
                     logout={this.handleLogout}
                 >
                     <Switch>
+
                         <UserRoute path='/' exact component={DashBoardPage}/>
+                        <UserRoute path='/posts' exact component={PostPage}/>
+                        <UserRoute path='/posts/add' exact component={AddPostPage}/>
+
                         <GuestRoute path='/login' exact component={LoginPage}/>
+
                         <Route component={NotFoundPage}/>
                     </Switch>
                 </LayOut>

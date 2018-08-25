@@ -14,10 +14,15 @@ use Illuminate\Http\Request;
 */
 
 Route::post('auth/register', 'AuthController@register');
-
 Route::post('auth/login', 'AuthController@login');
+
+Route::get('cate', 'CateController@index');
+Route::post('cate', 'CateController@store');
+Route::get('tag', 'TagController@index');
+Route::post('tag', 'TagController@store');
+
 Route::group(['middleware' => 'jwt.auth'], function(){
-    Route::get('auth/user', 'AuthController@user');
+    Route::post('post', 'PostController@store');
 });
 Route::group(['middleware' => 'jwt.refresh'], function(){
     Route::get('auth/refresh', 'AuthController@refresh');

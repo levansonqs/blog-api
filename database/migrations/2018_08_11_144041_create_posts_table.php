@@ -19,11 +19,12 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->string('alias');
             $table->text('content');
-            $table->string('image');
+            $table->text('image');
             $table->boolean('status')->default(0);
             $table->integer('cat_id')->default(1)->unsigned();
             $table->integer('view')->nullable();
             $table->integer('like')->nullable();
+            $table->string('type')->nullable();
             $table->timestamps();
         });
     }

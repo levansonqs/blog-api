@@ -17,7 +17,23 @@ html, body{
   margin: 0;
 }
 
-.transformStyle{
-  will-change:unset!important;
-  transform:unset!important;
+a{
+  text-decoration: none;
+}
+
+.active{
+  background-color: #3f51b5;
+  display: flex;
+}
+
+.active svg, .active span{
+  color: #fff;
+}
+
+.recharts-wrapper{
+  margin: auto;
+}
+
+.ql-editor {
+  min-height: 324px !important
 }

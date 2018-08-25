@@ -38,14 +38,14 @@ $factory->define(App\Post::class, function (Faker $faker) {
 
 $factory->define(App\Cat::class, function (Faker $faker) {
     return [
-        'title' => $faker->title,
+        'title' => $faker->name,
         'alias' => $faker->slug,
     ];
 });
 
 $factory->define(App\Tag::class, function (Faker $faker) {
     return [
-        'title' => $faker->title,
+        'title' => $faker->name,
         'alias' => $faker->slug,
     ];
 });
