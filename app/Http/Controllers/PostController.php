@@ -27,6 +27,7 @@ class PostController extends Controller
     public function index()
     {
         //
+        return response()->json($this->post->paginate(10));
     }
 
     /**

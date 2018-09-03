@@ -20,6 +20,8 @@ Route::get('cate', 'CateController@index');
 Route::post('cate', 'CateController@store');
 Route::get('tag', 'TagController@index');
 Route::post('tag', 'TagController@store');
+Route::get('posts', 'PostController@index');
+
 
 Route::group(['middleware' => 'jwt.auth'], function(){
     Route::post('post', 'PostController@store');
